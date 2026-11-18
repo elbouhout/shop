@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>خيط — متجر ملابس</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F6F2;--surface:#fff;--ink:#14201F;--muted:#5d6b69;--brand:#0F3D3E;--brand-ink:#fff;--accent:#E9B44C;--line:#dde2dd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1716;--surface:#16231f;--ink:#eef2ef;--muted:#9fb0ac;--brand:#E9B44C;--brand-ink:#14201F;--accent:#E9B44C;--line:#27403a}}
+:root[data-theme="dark"]{--bg:#0e1716;--surface:#16231f;--ink:#eef2ef;--muted:#9fb0ac;--brand:#E9B44C;--brand-ink:#14201F;--accent:#E9B44C;--line:#27403a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tajawal,Tahoma,sans-serif;line-height:1.7}
+.wrap{max-width:1080px;margin:auto;padding:0 20px}
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.logo{font-weight:800;font-size:28px;color:var(--brand)}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.cartbtn{background:var(--brand);color:var(--brand-ink);border:0;border-radius:999px;padding:8px 18px;font-weight:500}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;padding:36px 0 48px}
+.hero h1{font-size:clamp(34px,6vw,60px);line-height:1.15;margin:0 0 14px;font-weight:800}
+.hero p{color:var(--muted);max-width:44ch;margin:0 0 24px;font-size:18px}
+.cta{display:inline-block;background:var(--brand);color:var(--brand-ink);padding:12px 28px;border-radius:10px;text-decoration:none;font-weight:800}
+.stack{position:relative;height:300px}
+.stack svg{position:absolute;width:55%;height:auto;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.stack svg:nth-child(1){right:0;top:0;transform:rotate(4deg)}
+.stack svg:nth-child(2){left:6%;top:50px;transform:rotate(-5deg)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 18px}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+h2{font-size:28px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card svg{width:100%;height:auto;display:block}
+.info{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.info h3{margin:0;font-size:18px}
+.price{font-weight:800;color:var(--brand)}
+.sizes{display:flex;gap:6px}
+.sz{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:6px;min-width:34px;padding:2px 6px;font-size:13px}
+.sz[aria-pressed="true"]{background:var(--accent);color:#14201F;border-color:var(--accent)}
+.add{margin-top:auto;background:var(--brand);color:var(--brand-ink);border:0;border-radius:8px;padding:9px;font-weight:500}
+.about{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:56px 0}
+.about div{border-inline-start:4px solid var(--accent);padding-inline-start:14px}
+.about b{display:block;font-size:18px}
+.about span{color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:24px 0 32px;color:var(--muted);text-align:center}
+aside{position:fixed;top:0;bottom:0;left:0;width:min(380px,100%);background:var(--surface);border-right:1px solid var(--line);transform:translateX(-100%);transition:transform .25s;z-index:20;padding:calc(18px + env(safe-area-inset-top,0px)) 20px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
+aside.open{transform:none}
+aside{overflow-y:auto}
+.items{flex:none;max-height:32vh}
+.dlv{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+.dlv h3{margin:0 0 8px;font-size:17px}
+.dlv label{display:block;font-size:14px;margin-bottom:8px}
+.dlv input,.dlv select{display:block;width:100%;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px}
+.sum{display:flex;justify-content:space-between;padding:2px 0}
+.err{color:#c0392b;min-height:1.4em;font-size:14px}
+.items{flex:1;overflow:auto}
+.row{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row button{border:0;background:none;color:var(--muted)}
+.empty{color:var(--muted);padding:20px 0}
+.order{background:#1f9d55;color:#fff;border:0;border-radius:8px;padding:12px;font-weight:800;margin-top:12px}
+.order:disabled{opacity:.4}
+.admin{display:none;background:var(--accent);color:#14201F;border:0;border-radius:999px;padding:8px 16px;font-weight:800;margin-inline-end:8px}
+#editor{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) 12px 20px}
+#editor[hidden]{display:none}
+.panel{background:var(--surface);border-radius:14px;max-width:760px;width:100%;padding:20px}
+.panel label{display:block;margin-bottom:10px;font-weight:500}
+.panel input,.panel select{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px;max-width:100%}
+.panel label input{display:block;width:100%}
+.erow{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 44px 44px auto;gap:6px;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.erow input[type=color]{padding:0;height:34px;width:100%}
+.erow input,.erow select{width:100%;min-width:0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.bar button{border-radius:8px;padding:9px 18px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.bar .save{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:800}
+.msg{color:var(--muted);margin-top:8px;min-height:1.5em}
+@media (max-width:720px){.erow{grid-template-columns:1fr 1fr 1fr}.erow input:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){aside{transition:none}}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.stack{height:240px}.about{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo" id="logo">خيط</div><div><button class="admin" id="admin">تعديل المتجر</button><button class="cartbtn" id="open">السلة (<span id="count">0</span>)</button></div></header>
+
+<section class="hero">
+<div>
+<h1>ملابس يومية بقصّات مريحة وأسعار واضحة</h1>
+<p>قمصان وفساتين وسراويل وجاكيتات بخامات قطنية. اختر مقاسك، أضفه إلى السلة، وأكمل الطلب عبر واتساب.</p>
+<a class="cta" href="#shop">تصفّح المنتجات</a>
+</div>
+<div class="stack" aria-hidden="true">
+<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#0F3D3E"/><path d="M70 40l30 14 30-14 36 22-20 26-14-8v82H68V80l-14 8-20-26z" fill="#E9B44C"/></svg>
+<svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#E9B44C"/><path d="M80 30h40l8 40 30 100H42l30-100z" fill="#0F3D3E"/></svg>
+</div>
+</section>
+
+<section id="shop">
+<h2>المنتجات</h2>
+<div class="filters" id="filters"></div>
+<div class="grid" id="grid"></div>
+</section>
+
+<section class="about">
+<div><b>توصيل لكل الولايات</b><span>خلال 2 إلى 5 أيام عمل.</span></div>
+<div><b>الدفع عند الاستلام</b><span>افحص الطلب ثم ادفع.</span></div>
+<div><b>استبدال المقاس</b><span>خلال 7 أيام من الاستلام.</span></div>
+</section>
+<footer>خيط © 2026 — للطلبات والاستفسار عبر واتساب</footer>
+</div>
+
+<aside id="cart" aria-label="السلة">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">سلتك</h2><button class="chip" id="close">إغلاق</button></div>
+<div class="items" id="items"></div>
+<div class="dlv"><h3>معلومات التوصيل</h3>
+<label>الاسم الكامل<input id="f_name" autocomplete="name"></label>
+<label>رقم الهاتف<input id="f_phone" type="tel" dir="ltr" autocomplete="tel" placeholder="05 / 06 / 07 …"></label>
+<label>الولاية<input value="الجزائر العاصمة" disabled></label>
+<label>البلدية<select id="f_com"></select></label>
+<label>العنوان بالتفصيل<input id="f_addr" autocomplete="street-address" placeholder="الحي، الشارع، رقم المنزل"></label></div>
+<div class="sum"><span>المنتجات</span><span id="sub">0 دج</span></div>
+<div class="sum"><span>التوصيل</span><span id="fee">0 دج</span></div>
+<div class="sum" style="font-weight:800"><span>المجموع</span><span id="total">0 دج</span></div>
+<div class="err" id="err" role="alert"></div>
+<button class="order" id="order" disabled>إرسال الطلب عبر واتساب</button>
+</aside>
+
+<div id="editor" hidden><div class="panel" role="dialog" aria-label="تعديل المتجر"><h2>تعديل المتجر</h2><div id="edbody"></div><div class="bar"><button id="addp">إضافة منتج</button><button class="save" id="save">حفظ ونشر</button><button id="cancel">إغلاق</button></div><div class="msg" id="msg"></div></div></div>
+<script type="application/json" id="data">{"name": "خيط", "wa": "213000000000", "products": [{"id": 1, "n": "قميص كتان", "c": "رجالي", "p": 3200, "bg": "#0F3D3E", "fg": "#E9B44C", "t": "shirt"}, {"id": 2, "n": "سروال جينز مستقيم", "c": "رجالي", "p": 4500, "bg": "#2b4a6f", "fg": "#dbe6f3", "t": "pants"}, {"id": 3, "n": "فستان صيفي", "c": "نسائي", "p": 5200, "bg": "#E9B44C", "fg": "#0F3D3E", "t": "dress"}, {"id": 4, "n": "بلوزة قطنية", "c": "نسائي", "p": 2800, "bg": "#d8e4dc", "fg": "#0F3D3E", "t": "shirt"}, {"id": 5, "n": "جاكيت خفيف", "c": "نسائي", "p": 6900, "bg": "#6b2d3a", "fg": "#f3d9de", "t": "shirt"}, {"id": 6, "n": "طقم أطفال", "c": "أطفال", "p": 2400, "bg": "#f0c987", "fg": "#14201F", "t": "pants"}, {"id": 7, "n": "فستان بنات", "c": "أطفال", "p": 2900, "bg": "#9bc4b8", "fg": "#14201F", "t": "dress"}, {"id": 8, "n": "سروال رياضي", "c": "رجالي", "p": 3000, "bg": "#3a3f45", "fg": "#E9B44C", "t": "pants"}]}</script>
+<script>
+const $=id=>document.getElementById(id);
+const PRISTINE="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+let D=JSON.parse($("data").textContent);
+let P=D.products;
+if(D.fee==null)D.fee=400;
+const COM=["الجزائر الوسطى","سيدي أمحمد","المدنية","بلوزداد","باب الوادي","بولوغين","القصبة","وادي قريش","بئر مراد رايس","الأبيار","بوزريعة","بن عكنون","الحراش","باب الزوار","بئر خادم","دالي إبراهيم","الحمامات","رايس حميدو","جسر قسنطينة","الدرارية","الشراقة","أولاد فايت","السحاولة","سطاوالي","زرالدة","المحمدية","حسين داي","الكاليتوس","براقي","الرغاية","عين طاية","برج الكيفان","برج البحري","المرسى","الدار البيضاء","بوروبة","المقرية","بابا حسن","خرايسية","الرويبة","الرحمانية","سيدي موسى","عين البنيان","دويرة","هراوة","بني مسوس","القبة","بئر توتة","أولاد شبل","تسالة المرجة","الحميز","لعقيبة","الكرمة","وادي السمار","المعالمة"];
+$("f_com").innerHTML='<option value="">اختر البلدية</option>'+COM.map(c=>`<option>${c}</option>`).join("");
+const TN={shirt:"قميص / جاكيت",pants:"سروال",dress:"فستان"};
+const SH={shirt:"M70 40l30 14 30-14 36 22-20 26-14-8v82H68V80l-14 8-20-26z",pants:"M60 30h80l10 140h-38l-12-80-12 80H50z",dress:"M80 30h40l8 40 30 100H42l30-100z"};
+const S=["S","M","L","XL"];
+let cat="الكل",cart=[],sel={};
+const fmt=n=>n.toLocaleString("ar-DZ")+" دج";
+function renderFilters(){
+ $("filters").innerHTML=["الكل",...new Set(P.map(x=>x.c))].map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
+ $("filters").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;renderFilters();renderGrid()});
+}
+function renderGrid(){
+ $("grid").innerHTML=P.filter(x=>cat==="الكل"||x.c===cat).map(x=>{
+  const s=sel[x.id]||"M";
+  return `<article class="card"><svg viewBox="0 0 200 200" role="img" aria-label="${x.n}"><rect width="200" height="200" fill="${x.bg}"/><path d="${SH[x.t]}" fill="${x.fg}"/></svg>
+  <div class="info"><h3>${x.n}</h3><div class="price">${fmt(x.p)}</div>
+  <div class="sizes">${S.map(z=>`<button class="sz" aria-pressed="${z===s}" data-id="${x.id}" data-z="${z}">${z}</button>`).join("")}</div>
+  <button class="add" data-id="${x.id}">أضف إلى السلة</button></div></article>`}).join("");
+ $("grid").querySelectorAll(".sz").forEach(b=>b.onclick=()=>{sel[b.dataset.id]=b.dataset.z;renderGrid()});
+ $("grid").querySelectorAll(".add").forEach(b=>b.onclick=()=>{const id=+b.dataset.id;add(id,sel[id]||"M")});
+}
+function add(id,z){
+ const l=cart.find(i=>i.id===id&&i.z===z);
+ l?l.q++:cart.push({id,z,q:1});
+ renderCart();$("cart").classList.add("open");
+}
+function renderCart(){
+ const n=cart.reduce((a,i)=>a+i.q,0);
+ $("count").textContent=n;
+ const tot=cart.reduce((a,i)=>a+i.q*P.find(p=>p.id===i.id).p,0);
+ const fee=n?D.fee:0;
+ $("sub").textContent=fmt(tot);$("fee").textContent=fee?fmt(fee):"مجاني";$("total").textContent=fmt(tot+fee);
+ $("order").disabled=!n;
+ $("items").innerHTML=n?cart.map((i,k)=>{const p=P.find(p=>p.id===i.id);return `<div class="row"><span>${p.n} — ${i.z} × ${i.q}</span><span>${fmt(p.p*i.q)} <button data-k="${k}" aria-label="حذف">حذف</button></span></div>`}).join(""):`<div class="empty">السلة فارغة. اختر منتجاً وأضفه هنا.</div>`;
+ $("items").querySelectorAll("button").forEach(b=>b.onclick=()=>{cart.splice(+b.dataset.k,1);renderCart()});
+}
+$("open").onclick=()=>$("cart").classList.add("open");
+$("close").onclick=()=>$("cart").classList.remove("open");
+$("order").onclick=()=>{
+ const nm=$("f_name").value.trim(),ph=$("f_phone").value.replace(/\s/g,""),cm=$("f_com").value,ad=$("f_addr").value.trim();
+ if(!nm||!/^0[5-7]\d{8}$/.test(ph)||!cm||!ad){$("err").textContent=!nm?"اكتب الاسم الكامل.":!/^0[5-7]\d{8}$/.test(ph)?"اكتب رقم هاتف صحيحاً من 10 أرقام.":!cm?"اختر البلدية.":"اكتب العنوان بالتفصيل.";return}
+ $("err").textContent="";
+ const lines=cart.map(i=>{const p=P.find(p=>p.id===i.id);return `- ${p.n} (${i.z}) × ${i.q}`}).join("\n");
+ const tot=cart.reduce((a,i)=>a+i.q*P.find(p=>p.id===i.id).p,0);
+ const msg=`مرحباً، أريد طلب:\n${lines}\nالمنتجات: ${tot} دج\nالتوصيل: ${D.fee} دج\nالمجموع: ${tot+D.fee} دج\n\nالاسم: ${nm}\nالهاتف: ${ph}\nالعنوان: ${ad}، ${cm}، الجزائر العاصمة`;
+ window.open(`https://wa.me/${D.wa}?text=${encodeURIComponent(msg)}`,"_blank");
+};
+$("logo").textContent=D.name;document.title=D.name+" — متجر ملابس";
+renderFilters();renderGrid();renderCart();
+
+/* ---- لوحة التعديل: تظهر لصاحب الصفحة فقط ---- */
+const esc=t=>String(t).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+let E,ART;
+function draw(){
+ $("edbody").innerHTML=`<label>اسم المتجر<input data-g="name" value="${esc(E.name)}"></label>
+ <label>رقم واتساب (بصيغة دولية بدون +)<input data-g="wa" dir="ltr" value="${esc(E.wa)}"></label>
+ <label>سعر التوصيل (دج، 0 = مجاني)<input data-g="fee" type="number" min="0" value="${E.fee}"></label>
+ <h3>المنتجات</h3>`+E.products.map((p,i)=>`<div class="erow" data-i="${i}">
+ <input data-f="n" value="${esc(p.n)}" aria-label="الاسم">
+ <input data-f="c" value="${esc(p.c)}" aria-label="التصنيف">
+ <input data-f="p" type="number" min="0" value="${p.p}" aria-label="السعر">
+ <select data-f="t" aria-label="الشكل">${Object.keys(TN).map(k=>`<option value="${k}"${k===p.t?" selected":""}>${TN[k]}</option>`).join("")}</select>
+ <input data-f="bg" type="color" value="${p.bg}" aria-label="لون الخلفية">
+ <input data-f="fg" type="color" value="${p.fg}" aria-label="لون القطعة">
+ <button data-del="${i}">حذف</button></div>`).join("");
+}
+$("edbody").addEventListener("input",e=>{
+ const t=e.target,row=t.closest(".erow");
+ if(t.dataset.g)E[t.dataset.g]=t.dataset.g==="fee"?(+t.value||0):t.value;
+ else if(row&&t.dataset.f){const p=E.products[+row.dataset.i];p[t.dataset.f]=t.dataset.f==="p"?(+t.value||0):t.value}
+});
+$("edbody").addEventListener("click",e=>{const k=e.target.dataset.del;if(k!==undefined){E.products.splice(+k,1);draw()}});
+$("addp").onclick=()=>{E.products.push({id:Date.now(),n:"منتج جديد",c:"رجالي",p:3000,bg:"#0F3D3E",fg:"#E9B44C",t:"shirt"});draw()};
+$("cancel").onclick=()=>{$("editor").hidden=true};
+$("save").onclick=async()=>{
+ $("msg").textContent="جارٍ الحفظ…";
+ const json=JSON.stringify(E).replace(/</g,"\\u003c");
+ const html=PRISTINE.replace(/(<script type="application\/json" id="data">)[\s\S]*?(<\/script>)/,(m,x,y)=>x+json+y);
+ try{await ART.publish(html)}catch(err){$("msg").textContent="تعذّر الحفظ: "+(err&&err.code||"خطأ")}
+};
+(async()=>{
+ try{
+  if(!window.claude)return;
+  const u=await claude.use("user"),a=await claude.use("artifact");
+  if(!u||!a||!(u.isOwner()||u.canEdit()))return;
+  ART=a;$("admin").style.display="inline-block";
+  $("admin").onclick=()=>{E=JSON.parse(JSON.stringify(D));draw();$("msg").textContent="";$("editor").hidden=false};
+ }catch(err){}
+})();
+</script>
+</body>
+</html>
